@@ -23,19 +23,16 @@ router.post('/run', isAuth, (req, res) => {
     if(req.body.code.includes("SELECT")){
         db.all(req.body.code,{},function Cool(err, rows){
             if(err) return res.send(err);
-            var data = "";
-            rows.forEach((row)=>{
-                data += row;
-            })
-            //console.log(cool);
             
-            return res.send(row);
+            //console.log(cool);
+            console.log(rows);
+            return res.send(JSON.stringify(rows));
         })
     }else
     db.run(req.body.code,{},function Cool(err){
         if(err) return res.send(err);
         
-        return res.send("updated rows"+this.changes);
+        return res.send("updated rows "+this.changes + "and last id " + this.lastID);
     })
 });
 

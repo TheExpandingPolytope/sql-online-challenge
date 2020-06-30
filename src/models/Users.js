@@ -28,7 +28,16 @@ const UserSchema = new mongoose.Schema(
         },
         queries: {
             type: String,
-            default: `{"data":[]}`
+            default: `{"data":[
+                {
+                    "name":"Example INSERT",
+                    "code": "INSERT INTO artists (name) VALUES('Bud cool');"
+                },
+                {
+                    "name":"Example SELECT",
+                    "code":" SELECT ArtistId, Name FROM Artists ORDER BY ArtistId DESC;"
+                }
+            ]}`
         },
         date: {
             type: Date,

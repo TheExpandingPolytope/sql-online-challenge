@@ -38,7 +38,7 @@
                         var data = JSON.parse(this.response);
                         document.getElementById('queries').innerHTML = "";
                         data.forEach(element => {
-                            document.getElementById('queries').innerHTML += `<div id="saved" onclick="setQuery('${element.name}','${element.code}')">${element.name}</div>`
+                            document.getElementById('queries').innerHTML += '<div id="saved" onclick="setQuery(`'+element.name+'`,`'+element.code+'`)">'+element.name+'</div>'
                         });
                         //this.response
                     //document.getElementById("demo").innerHTML = this.responseText;
@@ -52,7 +52,9 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                     //document.getElementById("demo").innerHTML = this.responseText;
+                    getQueries();
                     }
+                    
                 };
                 xhttp.open("POST", "api/query/save");
                 xhttp.setRequestHeader("Content-type", "application/json");
@@ -66,7 +68,8 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("result").innerHTML = this.responseText;
-                    }
+                    getQueries();
+                }
                 };
                 xhttp.open("POST", "api/query/run");
                 xhttp.setRequestHeader("Content-type", "application/json");
@@ -78,7 +81,7 @@
             function saveAndExecute() {
                 save();
                 execute();
-                getQueries();
+                
             }
 
             function setQuery(name, code){
