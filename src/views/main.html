@@ -38,7 +38,7 @@
                         var data = JSON.parse(this.response);
                         document.getElementById('queries').innerHTML = "";
                         data.forEach(element => {
-                            document.getElementById('queries').innerHTML += '<div id="saved" onclick="setQuery(`'+element.name+'`,`'+element.code+'`)">'+element.name+'</div>'
+                            document.getElementById('queries').innerHTML += '<div id="saved" onclick="setQuery(`'+element.name+'`,`'+element.code+'`)">'+element.name+' (click me)</div>'
                         });
                         //this.response
                     //document.getElementById("demo").innerHTML = this.responseText;
