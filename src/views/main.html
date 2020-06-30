@@ -1,0 +1,91 @@
+<html>
+    <body>
+        <button onclick="logout()">Logout</button>
+        
+        <br>saved queries
+        <div id="queries"></div>
+        <div id="query">
+            <div>
+                <input id="name" name="name" placeholder="Query Name">
+                <button onclick="remove()">+New</button>
+            </div>
+            <textarea id="code" name="code" placeholder="code"></textarea>
+            <button onclick="saveAndExecute()">Save and Execute</button>
+            <div id="result"></div>
+        </div>
+        <script>
+            getQueries();
+            function logout(){
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.response);
+                        location.reload();
+                    }
+                };
+                xhttp.open("POST", "/api/auth/logout", true);
+                xhttp.send();
+            }
+            function remove(){
+                console.log("clearing");
+                document.getElementById("name").value = "";
+                document.getElementById("code").value = "";
+            }
+            function getQueries() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.response);
+                        document.getElementById('queries').innerHTML = "";
+                        data.forEach(element => {
+                            document.getElementById('queries').innerHTML += `<div id="saved" onclick="setQuery('${element.name}','${element.code}')">${element.name}</div>`
+                        });
+                        //this.response
+                    //document.getElementById("demo").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "/api/query/all", true);
+                xhttp.send();
+            }
+            function save() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                    //document.getElementById("demo").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "api/query/save");
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({
+                    name: document.getElementById("name").value,
+                    code: document.getElementById("code").value
+                }));
+            }
+            function execute() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("result").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "api/query/run");
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({
+                    name: document.getElementById("name").value,
+                    code: document.getElementById("code").value
+                }));
+            }
+            function saveAndExecute() {
+                save();
+                execute();
+                getQueries();
+            }
+
+            function setQuery(name, code){
+                console.log(name);
+                document.getElementById("name").value = name;
+                document.getElementById("code").value = code;
+            }
+        </script>
+    </body>
+</html>
