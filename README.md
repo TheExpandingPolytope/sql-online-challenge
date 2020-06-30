@@ -8,7 +8,7 @@ git clone https://github.com/TheExpandingPolytope/sql-online-challenge.git
 cd sql-online-challenge
 npm install
 ```
-in you .env file
+Then create .env file with the following:
 ```java
 MONGO_URI=<YOUR MONGO DB STRING>
 ```
