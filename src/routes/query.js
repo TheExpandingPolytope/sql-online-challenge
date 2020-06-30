@@ -10,7 +10,7 @@ var db = new sqlite3.Database('chinook.db');
 //get all saved queries
 router.post('/all', isAuth, (req, res) => {
     User.findById(req.user._id, (err, doc)=>{
-        console.log(doc);
+        //console.log(doc);
         res.send(JSON.parse(doc.queries).data);
     })
     
@@ -19,24 +19,34 @@ router.post('/all', isAuth, (req, res) => {
 //make a query to database
 //and return response
 router.post('/run', isAuth, (req, res) => {
-    console.log(req.body);
-    db.run(req.body.code,function(err, doc){
-        console.log(err);
-        console.log(doc);
+    //console.log(req.body);
+    if(req.body.code.includes("SELECT")){
+        db.all(req.body.code,{},function Cool(err, rows){
+            if(err) return res.send(err);
+            var data = "";
+            rows.forEach((row)=>{
+                data += row;
+            })
+            //console.log(cool);
+            
+            return res.send(row);
+        })
+    }else
+    db.run(req.body.code,{},function Cool(err){
         if(err) return res.send(err);
-        console.log(this);
-        return res.send("cool");
+        
+        return res.send("updated rows"+this.changes);
     })
 });
 
 //save query
 router.post('/save', isAuth, (req, res) => {
     User.findById(req.user._id, (err, doc)=>{
-        console.log(doc);
+        //console.log(doc);
         var added = false;
-        console.log(doc.queries);
+        //console.log(doc.queries);
         var queries = JSON.parse(doc.queries);
-        console.log(queries);
+        //console.log(queries);
         for (let index = 0; index < queries.data.length; index++){
             if(queries.data[index].name == req.body.name){
                 added = true;
